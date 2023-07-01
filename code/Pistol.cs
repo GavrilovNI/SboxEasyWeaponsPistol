@@ -4,6 +4,7 @@ using EasyWeapons.Weapons.Modules.Attack;
 using EasyWeapons.Weapons;
 using Sandbox;
 using EasyWeapons.Sounds;
+using EasyWeapons.Inventories;
 
 namespace EasyWeapons.Demo.Weapons;
 
@@ -11,6 +12,7 @@ namespace EasyWeapons.Demo.Weapons;
 [Library("ew_pistol")]
 public partial class Pistol : Weapon
 {
+    public const int DefaultMaxAmmoInClip = 8;
     public const float Force = 150f;
     public const float Spread = 0.05f;
     public const float Damage = 9f;
@@ -19,6 +21,9 @@ public partial class Pistol : Weapon
 
     [Net, Local]
     protected BulletSpawner BulletSpawner { get; private set; }
+
+    [Net, Local]
+    protected OneTypeAmmoInventory Clip { get; private set; }
 
 
     public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
@@ -33,8 +38,9 @@ public partial class Pistol : Weapon
             DeploySound = new DelayedSound("rust_pistol.deploy");
             DeployTime = 0.5f;
             BulletSpawner = new TraceBulletSpawner(Spread, Force, Damage, Distance, BulletSize, this);
+            Clip = OneTypeAmmoInventory.Full("pistol", DefaultMaxAmmoInClip);
 
-            var attackModule = new SimpleAttackModule(/*Clip, */BulletSpawner, new SemiShootingMode())
+            var attackModule = new SimpleAttackModule(Clip, BulletSpawner, new SemiShootingMode())
             {
                 AttackSound = new DelayedSound("rust_pistol.shoot"),
                 DryfireSound = new DelayedSound("rust_pistol.dryfire"),
@@ -48,6 +54,7 @@ public partial class Pistol : Weapon
         {
 
             BulletSpawner = null!;
+            Clip = null!;
         }
     }
 }
