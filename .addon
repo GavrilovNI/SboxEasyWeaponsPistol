@@ -17,7 +17,7 @@
   "EditorReferences": null,
   "Metadata": {
     "CsProjName": "",
-    "PrimaryAsset": "",
+    "PrimaryAsset": "EasyWeapons.Demo.Weapons.Pistol",
     "PhysicsMins": "-1,-1,-1",
     "PhysicsMaxs": "1,1,1",
     "RenderMins": "-1,-1,-1",
