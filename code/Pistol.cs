@@ -3,6 +3,7 @@ using EasyWeapons.Weapons.Modules.Attack.ShootingModes;
 using EasyWeapons.Weapons.Modules.Attack;
 using EasyWeapons.Weapons;
 using Sandbox;
+using EasyWeapons.Sounds;
 
 namespace EasyWeapons.Demo.Weapons;
 
@@ -29,6 +30,7 @@ public partial class Pistol : Weapon
         if(Game.IsServer)
         {
             DefaultLocalAimRay = new Ray(new(11f, 0f, 4.6f), Vector3.Forward);
+            DeploySound = new DelayedSound("rust_pistol.deploy");
             DeployTime = 0.5f;
             BulletSpawner = new TraceBulletSpawner(Spread, Force, Damage, Distance, BulletSize, this);
 
