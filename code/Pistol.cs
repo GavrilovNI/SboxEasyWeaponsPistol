@@ -19,10 +19,12 @@ public partial class Pistol : Weapon
     [Net, Local]
     protected BulletSpawner BulletSpawner { get; private set; }
 
+
+    public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
+
     public Pistol()
     {
-        Model = Cloud.Model("https://asset.party/facepunch/w_usp");
-        ViewModel = Cloud.Model("https://asset.party/facepunch/v_usp");
+        SetModel("weapons/rust_pistol/rust_pistol.vmdl");
 
         if(Game.IsServer)
         {
