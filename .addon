@@ -21,6 +21,13 @@
     "PhysicsMins": "-1,-1,-1",
     "PhysicsMaxs": "1,1,1",
     "RenderMins": "-1,-1,-1",
-    "RenderMaxs": "-1,-1,-1"
+    "RenderMaxs": "-1,-1,-1",
+    "Compiler": {
+      "RootNamespace": "EasyWeapons.Weapons.Pistol",
+      "DefineConstants": "SANDBOX;ADDON;DEBUG",
+      "NoWarn": "1701;1702;1591;",
+      "References": [],
+      "DistinctReferences": []
+    }
   }
 }
