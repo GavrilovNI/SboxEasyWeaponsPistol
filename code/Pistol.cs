@@ -30,8 +30,6 @@ public partial class Pistol : Weapon
 
     public Pistol()
     {
-        SetModel("weapons/rust_pistol/rust_pistol.vmdl");
-
         if(Game.IsServer)
         {
             DefaultLocalAimRay = new Ray(new(11f, 0f, 4.6f), Vector3.Forward);
@@ -56,5 +54,11 @@ public partial class Pistol : Weapon
             BulletSpawner = null!;
             Clip = null!;
         }
+    }
+
+    public override void Spawn()
+    {
+        base.Spawn();
+        SetModel("weapons/rust_pistol/rust_pistol.vmdl");
     }
 }
