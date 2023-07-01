@@ -36,6 +36,8 @@ public partial class Pistol : Weapon
 
             var attackModule = new SimpleAttackModule(/*Clip, */BulletSpawner, new SemiShootingMode())
             {
+                AttackSound = new DelayedSound("rust_pistol.shoot"),
+                DryfireSound = new DelayedSound("rust_pistol.dryfire"),
                 FireRate = 10f
             };
 
