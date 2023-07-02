@@ -5,6 +5,7 @@ using EasyWeapons.Weapons;
 using Sandbox;
 using EasyWeapons.Sounds;
 using EasyWeapons.Inventories;
+using EasyWeapons.Weapons.Modules.Reload;
 
 namespace EasyWeapons.Demo.Weapons;
 
@@ -18,6 +19,7 @@ public partial class Pistol : Weapon
     public const float Damage = 9f;
     public const float Distance = 5000f;
     public const float BulletSize = 3f;
+    public const float ReloadTime = 2.3f;
 
     [Net, Local]
     protected BulletSpawner BulletSpawner { get; private set; }
@@ -45,8 +47,16 @@ public partial class Pistol : Weapon
                 FireRate = 10f
             };
 
+            var reloadModule = new SimpleReloadModule(Clip)
+            {
+                ReloadTime = ReloadTime,
+                ReloadSound = DelayedSoundList.AllFromStart(new DelayedSound("rust_pistol.eject_clip", 0.2f), new DelayedSound("rust_pistol.grab_clip", 0.4f), new DelayedSound("rust_pistol.insert_clip", 1.35f)),
+                ReloadFailSound = new DelayedSound("no_ammo"),
+
+            };
 
             Components.Add(attackModule);
+            Components.Add(reloadModule);
         }
         else
         {
