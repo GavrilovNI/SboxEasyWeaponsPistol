@@ -6,6 +6,7 @@ using Sandbox;
 using EasyWeapons.Sounds;
 using EasyWeapons.Inventories;
 using EasyWeapons.Weapons.Modules.Reload;
+using EasyWeapons.Recoiles.Modules;
 
 namespace EasyWeapons.Demo.Weapons;
 
@@ -45,7 +46,8 @@ public partial class Pistol : Weapon
             {
                 AttackSound = new DelayedSound("rust_pistol.shoot"),
                 DryfireSound = new DelayedSound("rust_pistol.dryfire"),
-                FireRate = 10f
+                FireRate = 10f,
+                Recoil = new RandomRecoil() { XRecoil = new RangedFloat(-1, 1), YRecoil = 6 }
             };
 
             var reloadModule = new SimpleReloadModule(Clip)
