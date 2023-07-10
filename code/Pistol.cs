@@ -47,7 +47,8 @@ public partial class Pistol : Weapon
                 AttackSound = new DelayedSound("rust_pistol.shoot"),
                 DryfireSound = new DelayedSound("rust_pistol.dryfire"),
                 FireRate = 10f,
-                Recoil = new RandomRecoil() { XRecoil = new RangedFloat(-1, 1), YRecoil = 6 }
+                Recoil = new RandomRecoil() { XRecoil = new RangedFloat(-1, 1), YRecoil = 6 },
+                NoOwnerRecoilForce = 50000
             };
 
             var reloadModule = new SimpleReloadModule(Clip)
