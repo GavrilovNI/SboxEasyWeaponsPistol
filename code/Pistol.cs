@@ -34,6 +34,7 @@ public partial class Pistol : Weapon
     {
         if(Game.IsServer)
         {
+            UseOwnerAimRay = true;
             DefaultLocalAimRay = new Ray(new(11f, 0f, 4.6f), Vector3.Forward);
             DeploySound = new DelayedSound("rust_pistol.deploy");
             DeployTime = 0.5f;
