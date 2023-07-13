@@ -7,6 +7,10 @@ using EasyWeapons.Sounds;
 using EasyWeapons.Inventories;
 using EasyWeapons.Weapons.Modules.Reload;
 using EasyWeapons.Recoiles.Modules;
+using EasyWeapons.Effects;
+using System.Collections.Generic;
+using EasyWeapons.Effects.Animations;
+using EasyWeapons.Effects.Animations.Parameters;
 
 namespace EasyWeapons.Demo.Weapons;
 
@@ -37,15 +41,45 @@ public partial class Pistol : Weapon
         {
             UseOwnerAimRay = true;
             DefaultLocalAimRay = new Ray(new(11f, 0f, 4.6f), Vector3.Forward);
-            DeploySound = new DelayedSound("rust_pistol.deploy");
+            DeployEffects = new List<WeaponEffect>()
+            {
+                new SoundEffect()
+                {
+                    Side = Networking.NetworkSide.Client,
+                    Sound = new DelayedSound("rust_pistol.deploy")
+                },
+                new OwnerAnimationEffect() { AnimationParameter = AnimationParameter.Of("b_deploy", true) }
+            };
             DeployTime = 0.5f;
             BulletSpawner = new TraceBulletSpawner(Spread, Force, Damage, Distance, BulletSize, this);
             Clip = OneTypeAmmoInventory.Full("pistol", DefaultMaxAmmoInClip);
 
             var attackModule = new SimpleAttackModule(Clip, BulletSpawner, new SemiShootingMode())
             {
-                AttackSound = new DelayedSound("rust_pistol.shoot"),
-                DryfireSound = new DelayedSound("rust_pistol.dryfire"),
+                AttackEffects = new List<WeaponEffect>()
+                {
+                    new SoundEffect()
+                    {
+                        Side = Networking.NetworkSide.Server,
+                        Sound = new DelayedSound("rust_pistol.shoot")
+                    },
+                    new ParticleEffect()
+                    {
+                        Name = "particles/pistol_muzzleflash.vpcf",
+                        Attachment = "muzzle",
+                        ShouldFollow = false
+                    },
+                    new ViewModelAnimationEffect() { AnimationParameter = AnimationParameter.Of("fire", true) },
+                    new OwnerAnimationEffect() { AnimationParameter = AnimationParameter.Of("b_attack", true) }
+                },
+                DryfireEffects = new List<WeaponEffect>()
+                {
+                    new SoundEffect()
+                    {
+                        Side = Networking.NetworkSide.Server,
+                        Sound = new DelayedSound("rust_pistol.dryfire")
+                    }
+                },
                 FireRate = 10f,
                 Recoil = new RandomRecoil() { XRecoil = new RangedFloat(-1, 1), YRecoil = 6 },
                 NoOwnerRecoilForce = 50000
@@ -54,9 +88,24 @@ public partial class Pistol : Weapon
             var reloadModule = new SimpleReloadModule(Clip)
             {
                 ReloadTime = ReloadTime,
-                ReloadSound = DelayedSoundList.AllFromStart(new DelayedSound("rust_pistol.eject_clip", 0.2f), new DelayedSound("rust_pistol.grab_clip", 0.4f), new DelayedSound("rust_pistol.insert_clip", 1.35f)),
-                ReloadFailSound = new DelayedSound("no_ammo"),
-
+                ReloadEffects = new List<WeaponEffect>()
+                {
+                    new SoundEffect()
+                    {
+                        Side = Networking.NetworkSide.Server,
+                        Sound = DelayedSoundList.AllFromStart(new DelayedSound("rust_pistol.eject_clip", 0.2f), new DelayedSound("rust_pistol.grab_clip", 0.4f), new DelayedSound("rust_pistol.insert_clip", 1.35f)),
+                    },
+                    new ViewModelAnimationEffect() { AnimationParameter = AnimationParameter.Of("reload", true) },
+                    new OwnerAnimationEffect() { AnimationParameter = AnimationParameter.Of("b_reload", true) }
+                },
+                ReloadFailEffects = new List<WeaponEffect>()
+                {
+                    new SoundEffect()
+                    {
+                        Side = Networking.NetworkSide.Server,
+                        Sound = new DelayedSound("no_ammo")
+                    }
+                }
             };
 
             Components.Add(attackModule);
