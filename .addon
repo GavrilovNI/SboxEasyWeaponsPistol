@@ -1,7 +1,7 @@
 {
   "Title": "Pistol - Easy Weapons",
   "Type": "addon",
-  "Org": "local",
+  "Org": "doggy",
   "Ident": "ew_pistol",
   "Tags": null,
   "Schema": 1,
@@ -12,7 +12,7 @@
   "HasCode": true,
   "CodePath": "/code/",
   "PackageReferences": [
-    "local.easy_weapons"
+    "doggy.easy_weapons"
   ],
   "EditorReferences": null,
   "Metadata": {
