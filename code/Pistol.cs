@@ -11,6 +11,9 @@ using EasyWeapons.Effects;
 using System.Collections.Generic;
 using EasyWeapons.Effects.Animations;
 using EasyWeapons.Effects.Animations.Parameters;
+using EasyWeapons.Weapons.Modules.Aiming;
+using EasyWeapons.Weapons.Modules.Aiming.Effects;
+using static EasyWeapons.Weapons.Modules.Aiming.Effects.ViewModelPositioningEffect;
 
 namespace EasyWeapons.Demo.Weapons;
 
@@ -108,8 +111,29 @@ public partial class Pistol : Weapon
                 }
             };
 
+            var aimingModule = new AimingModule()
+            {
+                Effects = new List<AimingEffect>()
+                {
+                    new ViewModelPositioningEffect(this)
+                    {
+                        DefaultPositioning = new ViewModelPositioning(),
+                        AimedPositioning = new ViewModelPositioning()
+                        {
+                            PositionOffset = new Vector3(0, 17f, 2.45f),
+                            FieldOfView = 40f
+                        }
+                    },
+                    new FovEffect(this)
+                    {
+                        FieldOfView = 50
+                    }
+                }
+            };
+
             Components.Add(attackModule);
             Components.Add(reloadModule);
+            Components.Add(aimingModule);
         }
         else
         {
