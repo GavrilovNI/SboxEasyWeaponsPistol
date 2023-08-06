@@ -1,5 +1,4 @@
-﻿using EasyWeapons.Bullets.Spawners;
-using EasyWeapons.Weapons.Modules.Attack.ShootingModes;
+﻿using EasyWeapons.Weapons.Modules.Attack.ShootingModes;
 using EasyWeapons.Weapons.Modules.Attack;
 using EasyWeapons.Weapons;
 using Sandbox;
@@ -14,6 +13,9 @@ using EasyWeapons.Effects.Animations.Parameters;
 using EasyWeapons.Weapons.Modules.Aiming;
 using EasyWeapons.Weapons.Modules.Aiming.Effects;
 using static EasyWeapons.Weapons.Modules.Aiming.Effects.ViewModelPositioningEffect;
+using EasyWeapons.Bullets.Spawners;
+using EasyWeapons.Bullets.Datas;
+using EasyWeapons.Bullets;
 
 namespace EasyWeapons.Demo.Weapons;
 
@@ -21,13 +23,18 @@ namespace EasyWeapons.Demo.Weapons;
 [Library("ew_pistol")]
 public partial class Pistol : Weapon
 {
+    public const string DefaultAmmoId = "pistol";
+
     public const int DefaultMaxAmmoInClip = 8;
-    public const float Force = 150f;
-    public const float Spread = 0.05f;
+
+    public const float HitForce = 150f;
     public const float Damage = 9f;
-    public const float Distance = 5000f;
-    public const float BulletSize = 3f;
+
     public const float ReloadTime = 2.3f;
+
+    public const float Spread = 0.05f;
+    public const float Distance = 5000f;
+    public const float TraceRadius = 3f;
 
     [Net, Local]
     protected BulletSpawner BulletSpawner { get; private set; }
@@ -37,6 +44,16 @@ public partial class Pistol : Weapon
 
 
     public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
+
+    static Pistol()
+    {
+        if(Game.IsServer)
+        {
+            var bulletsRegister = BulletsRegister.Instanse;
+            if(bulletsRegister.Contains<InstantTraceBulletData>(DefaultAmmoId) == false)
+                bulletsRegister.Add(DefaultAmmoId, new InstantTraceBulletData() { HitForce = HitForce, Damage = Damage });
+        }
+    }
 
     public Pistol()
     {
@@ -54,8 +71,8 @@ public partial class Pistol : Weapon
                 new OwnerAnimationEffect() { AnimationParameter = AnimationParameter.Of("b_deploy", true) }
             };
             DeployTime = 0.5f;
-            BulletSpawner = new TraceBulletSpawner(Spread, Force, Damage, Distance, BulletSize, this);
-            Clip = OneTypeAmmoInventory.Full("pistol", DefaultMaxAmmoInClip);
+            BulletSpawner = new InstantTraceBulletSpawner(Spread, Distance, TraceRadius, this);
+            Clip = OneTypeAmmoInventory.Full(DefaultAmmoId, DefaultMaxAmmoInClip);
 
             var attackModule = new SimpleAttackModule(Clip, BulletSpawner, new SemiShootingMode())
             {
