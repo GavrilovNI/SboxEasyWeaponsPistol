@@ -27,7 +27,7 @@ public partial class Pistol : Weapon
 
     public const int DefaultMaxAmmoInClip = 8;
 
-    public const float HitForce = 150f;
+    public const float HitForce = 5f;
     public const float Damage = 9f;
 
     public const float ReloadTime = 2.3f;
