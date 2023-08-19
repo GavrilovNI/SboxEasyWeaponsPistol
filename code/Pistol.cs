@@ -137,7 +137,7 @@ public partial class Pistol : Weapon
                         DefaultPositioning = new ViewModelPositioning(),
                         AimedPositioning = new ViewModelPositioning()
                         {
-                            PositionOffset = new Vector3(0, 17f, 2.45f),
+                            PositionOffset = new Vector3(0, 16.77f, 2.5f),
                             FieldOfView = 40f
                         }
                     },
