@@ -27,9 +27,6 @@ public partial class Pistol : Weapon
 
     public const int DefaultMaxAmmoInClip = 8;
 
-    public const float HitForce = 5f;
-    public const float Damage = 9f;
-
     public const float ReloadTime = 2.3f;
 
     public const float Spread = 0.05f;
@@ -42,18 +39,8 @@ public partial class Pistol : Weapon
     [Net, Local]
     protected OneTypeAmmoInventory Clip { get; private set; }
 
-
     public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
 
-    static Pistol()
-    {
-        if(Game.IsServer)
-        {
-            var bulletsRegister = BulletsRegister.Instanse;
-            if(bulletsRegister.Contains<InstantTraceBulletData>(DefaultAmmoId) == false)
-                bulletsRegister.Add(DefaultAmmoId, new InstantTraceBulletData() { HitForce = HitForce, Damage = Damage });
-        }
-    }
 
     public Pistol()
     {
